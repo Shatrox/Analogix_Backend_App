@@ -12,9 +12,10 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\Utils\" />
-    <Folder Include="Interfaces\Services\" />
-    <Folder Include="Interfaces\Repositories\" />
-    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Analogix_Backend_App.Domain\Analogix_Backend_App.Domain.csproj" />
   </ItemGroup>
 
 </Project>
