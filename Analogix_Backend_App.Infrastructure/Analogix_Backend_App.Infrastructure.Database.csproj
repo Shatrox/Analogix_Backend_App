@@ -20,9 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Configs\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Analogix_Backend_App.ApplicationCore\Analogix_Backend_App.ApplicationCore.csproj" />
   </ItemGroup>
 
 </Project>
