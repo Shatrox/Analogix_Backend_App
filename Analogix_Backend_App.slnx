@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/ApplicationCore/">
+    <Project Path="Analogix_Backend_App.ApplicationCore/Analogix_Backend_App.ApplicationCore.csproj" />
+  </Folder>
+  <Folder Name="/Domain/">
+    <Project Path="Analogix_Backend_App.Domain/Analogix_Backend_App.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="Analogix_Backend_App.Infrastructure/Analogix_Backend_App.Infrastructure.Database.csproj" />
+  </Folder>
+  <Folder Name="/Presentation/">
+    <Project Path="Analogix_Backend_App/Analogix_Backend_App.Presentation.WebAPI.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="Readme.md" />
+  </Folder>
+</Solution>
