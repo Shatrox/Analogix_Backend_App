@@ -8,6 +8,7 @@ using System.Text;
 
 namespace Analogix_Backend_App.Infrastructure.Database.Repositories
 {
+    // This class implements the IUserRepository interface, providing methods for creating a user, retrieving a user's password by email, and retrieving a user by email.
     public class UserRepository : IUserRepository
     {
         private readonly AppDbContext _dbContext; // This line declares a private readonly field of type AppDbContext, which will be used to interact with the database.
@@ -35,6 +36,8 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
                 .Password; // returning the password of the found user
 
         }
+
+
 
         public User GetUserByEmail(string email)
         {
