@@ -8,7 +8,7 @@ namespace Analogix_Backend_App.Infrastructure.Database
     {
         public DbSet<User> Users { get; set; } // This line defines a DbSet property for the User entity, allowing you to perform CRUD operations on the Users table in the database.
 
-        public AppDbContext(DbContextOptions options) : base(options){ } // Ctor Definition: allows for dependency injection.
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { } // Ctor Definition: allows for dependency injection.
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
         

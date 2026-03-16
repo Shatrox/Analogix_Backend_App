@@ -41,7 +41,7 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Token
             ];
 
             // ↓ Creation of signing credentials using a secret key from the configuration
-            string secret = _config["Token:Secret"] ?? throw new Exception("Token secret not found in configuration."); // Ensure that the secret is not null
+            string secret = _config["Token:Key"] ?? throw new Exception("Token secret not found in configuration."); // Ensure that the secret is not null
             byte[] key = Encoding.UTF8.GetBytes(secret); // Convert the secret key to a byte array
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key); // Create a symmetric security key using the byte array
             SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512); // Create signing credentials using the security key and HMAC SHA-512 algorithm
