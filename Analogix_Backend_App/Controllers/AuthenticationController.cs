@@ -61,7 +61,7 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
             {
                 string token = _tokenTool.Generate(new TokenTool.Data()
                 {
-                    MemberId = user.Id, // Sets the MemberId property of the token data to the authenticated user's ID.
+                    UserId = user.Id, // Sets the UserId property of the token data to the authenticated user's ID.
                     Role = user.Role.ToString() // Sets the Role property of the token data to the authenticated user's role, converted to a string.
                 });
 

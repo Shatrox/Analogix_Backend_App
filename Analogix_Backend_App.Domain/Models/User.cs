@@ -13,6 +13,7 @@ namespace Analogix_Backend_App.Domain.Models
         public string Password { get; set; } = default!;
         public string Email { get; set; } = default!;
         public UserRoles Role { get; set; }
+        public PlayerProfile? PlayerProfile { get; set; } 
 
 
         private User() { } // Private constructor for EF Core
