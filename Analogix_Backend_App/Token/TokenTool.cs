@@ -20,7 +20,7 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Token
         public class Data // This class is intended to represent the data that will be included in the token, such as the member's ID and role.
         { 
         
-            public required long MemberId { get; set; }
+            public required long UserId { get; set; }
             public required string Role { get; set; }
 
 
@@ -35,7 +35,7 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Token
             // ↓ Create claims based on the provided data
             Claim[] claims = [
                 // ↓ Claim for the member's ID
-                new Claim(ClaimTypes.NameIdentifier, data.MemberId.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, data.UserId.ToString()),
                 // ↓ Claim for the member's role
                 new Claim(ClaimTypes.Role, data.Role)
             ];
@@ -46,12 +46,16 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Token
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(key); // Create a symmetric security key using the byte array
             SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512); // Create signing credentials using the security key and HMAC SHA-512 algorithm
 
+            int expireMinutes = int.Parse(_config["Token:Expire"] ?? "60"); // Get the token expiration time from the configuration, defaulting to 60 minutes if not set
+            DateTime utcNow = DateTime.UtcNow; // Get the current UTC time            
 
             JwtSecurityToken token = new JwtSecurityToken(
                 
                 issuer: _config["Token:Issuer"], // Set the issuer of the token from the configuration
                 audience: _config["Token:Audience"], // Set the audience of the token from the configuration
                 claims: claims, // Include the claims in the token
+                notBefore: utcNow, // Set the token to be valid immediately
+                expires: utcNow.AddMinutes(expireMinutes), // Set the token to expire after the specified number of minutes
                 signingCredentials: credentials
             );
 

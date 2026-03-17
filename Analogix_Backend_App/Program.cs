@@ -16,9 +16,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<TokenTool>();
 // Add services.
 builder.Services.AddScoped<IUserService, UserService>(); // This line registers the IUserService interface and its implementation UserService with the dependency injection container, allowing for the injection of IUserService into controllers and other services.
+builder.Services.AddScoped<IPlayerProfileService, PlayerProfileService>();
 
 // Add Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPlayerProfileRepository, PlayerProfileRepository>();
 
 // - DB Context
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -83,6 +85,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication(); // This line adds the authentication middleware to the HTTP request pipeline, enabling the application to authenticate users based on the configured JWT authentication scheme. It ensures that incoming requests are processed for authentication before reaching the authorization middleware.
 
 app.UseAuthorization();
 
