@@ -15,6 +15,11 @@ namespace Analogix_Backend_App.Domain.Models
         public UserRoles Role { get; set; }
         public PlayerProfile? PlayerProfile { get; set; } 
 
+        // Navigation properties for Event
+        public ICollection<Event> CreatedEvents { get; set; } = new List<Event>();
+        // Navigation properties for EventSubscription
+        public ICollection<EventSubscription> EventSubscriptions { get; set; } = new List<EventSubscription>();
+
 
         private User() { } // Private constructor for EF Core
 

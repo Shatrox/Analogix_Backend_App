@@ -6,8 +6,11 @@ namespace Analogix_Backend_App.Infrastructure.Database
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<User> Users { get; set; } // This line defines a DbSet property for the User entity, allowing you to perform CRUD operations on the Users table in the database.
-        public DbSet<PlayerProfile> PlayerProfiles { get; set; } // This line defines a DbSet property for the PlayerProfile entity, allowing you to perform CRUD operations on the PlayerProfiles table in the database.
+        // Here we define DbSet properties for each of our entities. These properties represent the tables in our database and allow us to perform CRUD operations
+        public DbSet<User> Users { get; set; } 
+        public DbSet<PlayerProfile> PlayerProfiles { get; set; } 
+        public DbSet<Event> Events { get; set; } 
+        public DbSet<EventSubscription> EventSubscriptions { get; set; } 
 
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { } // Ctor Definition: allows for dependency injection.
