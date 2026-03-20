@@ -17,11 +17,14 @@ builder.Services.AddSingleton<TokenTool>();
 // Add services.
 builder.Services.AddScoped<IUserService, UserService>(); // This line registers the IUserService interface and its implementation UserService with the dependency injection container, allowing for the injection of IUserService into controllers and other services.
 builder.Services.AddScoped<IPlayerProfileService, PlayerProfileService>();
+builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IEventSubscriptionService, EventSubscriptionService>();
 
 // Add Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPlayerProfileRepository, PlayerProfileRepository>();
-
+builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IEventSubscriptionRepository, EventSubscriptionRepository>();
 // - DB Context
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

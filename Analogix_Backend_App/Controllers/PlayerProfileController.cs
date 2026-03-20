@@ -1,6 +1,6 @@
 ﻿using Analogix_Backend_App.ApplicationCore.Interfaces.Services;
 using Analogix_Backend_App.Domain.Models;
-using Analogix_Backend_App.Presentation.WebAPI.Dto;
+using Analogix_Backend_App.Presentation.WebAPI.Dto.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

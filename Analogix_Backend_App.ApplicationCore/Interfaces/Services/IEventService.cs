@@ -1,0 +1,18 @@
+﻿using Analogix_Backend_App.Domain.Models;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Analogix_Backend_App.ApplicationCore.Interfaces.Services
+{
+    public interface IEventService
+    {
+        Event Create(string title, string? description, string location, DateTime startDate, DateTime? endDate, int maxParticipants, long creatorId);
+        Event Update(long id, string title, string? description, string location, DateTime startDate, DateTime? endDate, int maxParticipants, long creatorId);
+        void Delete (long creatorId, long eventId);
+        Event? GetById(long id);
+        List<Event> GetAll();
+
+
+    }
+}
