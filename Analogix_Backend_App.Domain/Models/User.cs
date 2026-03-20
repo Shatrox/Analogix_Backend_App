@@ -19,6 +19,8 @@ namespace Analogix_Backend_App.Domain.Models
         public ICollection<Event> CreatedEvents { get; set; } = new List<Event>();
         // Navigation properties for EventSubscription
         public ICollection<EventSubscription> EventSubscriptions { get; set; } = new List<EventSubscription>();
+        public ICollection<Rating> GivenRatings { get; set; } = new List<Rating>();
+        public ICollection<Rating> ReceivedRatings { get; set; } = new List<Rating>();
 
 
         private User() { } // Private constructor for EF Core

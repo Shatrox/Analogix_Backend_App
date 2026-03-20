@@ -11,6 +11,7 @@ namespace Analogix_Backend_App.Infrastructure.Database
         public DbSet<PlayerProfile> PlayerProfiles { get; set; } 
         public DbSet<Event> Events { get; set; } 
         public DbSet<EventSubscription> EventSubscriptions { get; set; } 
+        public DbSet<Rating> Ratings { get; set; }
 
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { } // Ctor Definition: allows for dependency injection.
