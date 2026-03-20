@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Analogix_Backend_App.ApplicationCore.Interfaces.Services
+namespace Analogix_Backend_App.ApplicationCore.Interfaces.Repositories
 {
     public interface IEventRepository
     {

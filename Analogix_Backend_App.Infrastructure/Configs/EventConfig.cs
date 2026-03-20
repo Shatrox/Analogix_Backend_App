@@ -66,11 +66,19 @@ namespace Analogix_Backend_App.Infrastructure.Database.Configs
 
             // Relationships
 
+            // Realtionship between Event and User (Creator) : Many-to-One (Many Events can be created by one User, but each Event has only one Creator)
             builder.HasOne(e => e.Creator)
                    .WithMany(u => u.CreatedEvents)
                    .HasForeignKey(e => e.CreatorId)
-                   .OnDelete(DeleteBehavior.Cascade)
+                   .OnDelete(DeleteBehavior.Restrict) 
                    .HasConstraintName("FK_Events_Users_CreatorId");
+
+            // Relationship between Event and EventSubscription : Many-to-One (One Event can have many Subscriptions, but each Subscription is for one Event)
+            builder.HasMany(e => e.Subscriptions)
+                   .WithOne(es => es.Event)
+                   .HasForeignKey(es => es.EventId)
+                   .OnDelete(DeleteBehavior.Cascade) // When an Event is deleted, all related Subscriptions will also be deleted
+                   .HasConstraintName("FK_EventSubscriptions_Events_EventId");
 
 
         }

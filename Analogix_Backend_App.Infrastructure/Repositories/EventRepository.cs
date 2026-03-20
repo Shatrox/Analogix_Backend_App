@@ -1,4 +1,4 @@
-﻿using Analogix_Backend_App.ApplicationCore.Interfaces.Services;
+﻿using Analogix_Backend_App.ApplicationCore.Interfaces.Repositories;
 using Analogix_Backend_App.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;

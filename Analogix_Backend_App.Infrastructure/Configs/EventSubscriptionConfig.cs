@@ -57,7 +57,7 @@ namespace Analogix_Backend_App.Infrastructure.Database.Configs
                    .WithMany(e => e.Subscriptions)
                    .HasForeignKey(es => es.EventId)
                    .HasConstraintName("FK_EventSubscriptions_Events_EventId")
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.Cascade);   
 
 
             // Each subscription is for one user, but a user can have many subscriptions
@@ -65,7 +65,7 @@ namespace Analogix_Backend_App.Infrastructure.Database.Configs
                    .WithMany(u => u.EventSubscriptions)
                    .HasForeignKey(es => es.UserId)
                    .HasConstraintName("FK_EventSubscriptions_Users_UserId")
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .OnDelete(DeleteBehavior.Restrict);
 
 
 

@@ -37,7 +37,7 @@ namespace Analogix_Backend_App.Domain.Models
             UserId = userId;
             Status = SubscriptionStatus.Pending;
             CreatedAt = DateTime.UtcNow;
-            ResponseAt = DateTime.UtcNow;
+            ResponseAt = null; // Response time will be set when the status changes from Pending to Accepted or Refused
         }
 
 
