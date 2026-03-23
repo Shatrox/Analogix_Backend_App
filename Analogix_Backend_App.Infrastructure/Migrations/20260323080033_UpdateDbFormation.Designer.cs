@@ -4,6 +4,7 @@ using Analogix_Backend_App.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Analogix_Backend_App.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260323080033_UpdateDbFormation")]
+    partial class UpdateDbFormation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,52 +78,6 @@ namespace Analogix_Backend_App.Infrastructure.Database.Migrations
                         .HasDatabaseName("IX_Events_StartDate");
 
                     b.ToTable("Events", (string)null);
-                });
-
-            modelBuilder.Entity("Analogix_Backend_App.Domain.Models.EventFaq", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Answer")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<DateTime?>("AnsweredAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("AnsweredUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("AskedAtUtc")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("AuthorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("EventId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Question")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnsweredUserId")
-                        .HasDatabaseName("IX_EventFaqs_AnsweredUserId");
-
-                    b.HasIndex("AuthorUserId")
-                        .HasDatabaseName("IX_EventFaqs_AuthorUserId");
-
-                    b.HasIndex("EventId")
-                        .HasDatabaseName("IX_EventFaqs_EventId");
-
-                    b.ToTable("EventFaqs", (string)null);
                 });
 
             modelBuilder.Entity("Analogix_Backend_App.Domain.Models.EventSubscription", b =>
@@ -320,35 +277,6 @@ namespace Analogix_Backend_App.Infrastructure.Database.Migrations
                     b.Navigation("Creator");
                 });
 
-            modelBuilder.Entity("Analogix_Backend_App.Domain.Models.EventFaq", b =>
-                {
-                    b.HasOne("Analogix_Backend_App.Domain.Models.User", "AnsweredUser")
-                        .WithMany("AnsweredFaqs")
-                        .HasForeignKey("AnsweredUserId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .HasConstraintName("FK_EventFaqs_Users_AnsweredUserId");
-
-                    b.HasOne("Analogix_Backend_App.Domain.Models.User", "AuthorUser")
-                        .WithMany("AskedFaqs")
-                        .HasForeignKey("AuthorUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("FK_EventFaqs_Users_AuthorUserId");
-
-                    b.HasOne("Analogix_Backend_App.Domain.Models.Event", "Event")
-                        .WithMany("EventFaq")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_EventFaqs_Events_EventId");
-
-                    b.Navigation("AnsweredUser");
-
-                    b.Navigation("AuthorUser");
-
-                    b.Navigation("Event");
-                });
-
             modelBuilder.Entity("Analogix_Backend_App.Domain.Models.EventSubscription", b =>
                 {
                     b.HasOne("Analogix_Backend_App.Domain.Models.Event", "Event")
@@ -413,8 +341,6 @@ namespace Analogix_Backend_App.Infrastructure.Database.Migrations
 
             modelBuilder.Entity("Analogix_Backend_App.Domain.Models.Event", b =>
                 {
-                    b.Navigation("EventFaq");
-
                     b.Navigation("Ratings");
 
                     b.Navigation("Subscriptions");
@@ -422,10 +348,6 @@ namespace Analogix_Backend_App.Infrastructure.Database.Migrations
 
             modelBuilder.Entity("Analogix_Backend_App.Domain.Models.User", b =>
                 {
-                    b.Navigation("AnsweredFaqs");
-
-                    b.Navigation("AskedFaqs");
-
                     b.Navigation("CreatedEvents");
 
                     b.Navigation("EventSubscriptions");

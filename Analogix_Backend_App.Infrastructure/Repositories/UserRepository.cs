@@ -37,13 +37,26 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
 
         }
 
-
-
         public User GetUserByEmail(string email)
         {
             var result = _dbContext.Users
                 .Single(m => m.Email == email); // querying the Users DbSet to find a single user with the specified email
             return new User(result.Id, result.Username, null, result.Email, result.Role); // returning a new User instance with the found user's details, but with the password set to null for security reasons
+        }
+
+        public User? GetById(long id)
+        {
+            var result = _dbContext.Users
+                .SingleOrDefault(u => u.Id == id);
+
+            if (result == null) 
+            {
+
+                throw new ArgumentException("User Id not found!");
+            
+            }
+
+            return new User(result.Id, result.Username, null, result.Email, result.Role);
         }
     }
 }

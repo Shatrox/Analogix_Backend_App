@@ -42,6 +42,13 @@ namespace Analogix_Backend_App.ApplicationCore.Services
             
             }
 
+            // Cannot subscribe to your own event
+            if (ev.CreatorId == userId) { 
+            
+                throw new InvalidOperationException("You cannot subscribe to your own event.");
+
+            }
+
             var subscriptionAdd = new EventSubscription(eventId, userId);
             
             return _eventSubscriptionRepository.Create(subscriptionAdd);
