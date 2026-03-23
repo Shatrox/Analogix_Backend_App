@@ -12,9 +12,8 @@ namespace Analogix_Backend_App.ApplicationCore.Interfaces.Repositories
         // Method to get a user by their email
         User GetUserByEmail(string email);
         // Allow to get password by email
-        string  GetPasswordByEmail(string email);
-
-
+        string GetPasswordByEmail(string email);
+        User? GetById(long id);
 
 
 

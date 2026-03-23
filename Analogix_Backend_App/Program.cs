@@ -19,12 +19,17 @@ builder.Services.AddScoped<IUserService, UserService>(); // This line registers 
 builder.Services.AddScoped<IPlayerProfileService, PlayerProfileService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventSubscriptionService, EventSubscriptionService>();
+builder.Services.AddScoped<IRatingService, RatingService>();
+builder.Services.AddScoped<IEventFaqService, EventFaqService>();
 
 // Add Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPlayerProfileRepository, PlayerProfileRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventSubscriptionRepository, EventSubscriptionRepository>();
+builder.Services.AddScoped<IRatingRepository, RatingRepository>();
+builder.Services.AddScoped<IEventFaqRepository, EventFaqRepository>();
+
 // - DB Context
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
