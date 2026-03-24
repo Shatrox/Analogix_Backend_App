@@ -12,6 +12,7 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Dto.Request
         public required string FavoriteGames { get; set; }
         [Required]
         public required MasteryLevel MasteryLevel { get; set; }
+        public List<string> FavoriteGameTags { get; set; } = new();
 
 
     }

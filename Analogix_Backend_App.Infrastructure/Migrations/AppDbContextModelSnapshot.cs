@@ -168,6 +168,37 @@ namespace Analogix_Backend_App.Infrastructure.Database.Migrations
                     b.ToTable("EventSubscriptions", (string)null);
                 });
 
+            modelBuilder.Entity("Analogix_Backend_App.Domain.Models.GameTag", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("Name");
+
+                    b.Property<string>("NormalizedName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("NormalizedName");
+
+                    b.HasKey("Id")
+                        .HasName("PK_GameTags");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("IX_GameTags_NormalizedName");
+
+                    b.ToTable("GameTags", (string)null);
+                });
+
             modelBuilder.Entity("Analogix_Backend_App.Domain.Models.PlayerProfile", b =>
                 {
                     b.Property<long>("Id")
@@ -308,6 +339,38 @@ namespace Analogix_Backend_App.Infrastructure.Database.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("EventGameTag", b =>
+                {
+                    b.Property<long>("EventId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("GameTagId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("EventId", "GameTagId")
+                        .HasName("PK_EventGameTag");
+
+                    b.HasIndex("GameTagId");
+
+                    b.ToTable("EventGameTags", (string)null);
+                });
+
+            modelBuilder.Entity("PlayerProfileGameTag", b =>
+                {
+                    b.Property<long>("PlayerProfileId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("GameTagId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("PlayerProfileId", "GameTagId")
+                        .HasName("PK_PlayerProfileGameTags");
+
+                    b.HasIndex("GameTagId");
+
+                    b.ToTable("PlayerProfileGameTags", (string)null);
+                });
+
             modelBuilder.Entity("Analogix_Backend_App.Domain.Models.Event", b =>
                 {
                     b.HasOne("Analogix_Backend_App.Domain.Models.User", "Creator")
@@ -409,6 +472,40 @@ namespace Analogix_Backend_App.Infrastructure.Database.Migrations
                     b.Navigation("RaterUser");
 
                     b.Navigation("TargetUser");
+                });
+
+            modelBuilder.Entity("EventGameTag", b =>
+                {
+                    b.HasOne("Analogix_Backend_App.Domain.Models.Event", null)
+                        .WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_EventGameTag_Events_EventId");
+
+                    b.HasOne("Analogix_Backend_App.Domain.Models.GameTag", null)
+                        .WithMany()
+                        .HasForeignKey("GameTagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_EventGameTag_GameTags_GameTagId");
+                });
+
+            modelBuilder.Entity("PlayerProfileGameTag", b =>
+                {
+                    b.HasOne("Analogix_Backend_App.Domain.Models.GameTag", null)
+                        .WithMany()
+                        .HasForeignKey("GameTagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_ProfileGameTags_GameTags_GameTagId");
+
+                    b.HasOne("Analogix_Backend_App.Domain.Models.PlayerProfile", null)
+                        .WithMany()
+                        .HasForeignKey("PlayerProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_ProfileGameTags_PlayerProfiles_PlayerProfileId");
                 });
 
             modelBuilder.Entity("Analogix_Backend_App.Domain.Models.Event", b =>

@@ -17,7 +17,7 @@ namespace Analogix_Backend_App.ApplicationCore.Services
             _eventRepository = eventRepository;
         }
 
-        public Event Create(string title, string? description, string location, DateTime startDate, DateTime? endDate, int maxParticipants, long creatorId)
+        public Event Create(string title, string? description, string location, DateTime startDate, DateTime? endDate, int maxParticipants, long creatorId, IReadOnlyCollection<string>? gameTags)
         {
             ValidateStartDate(startDate);
             ValidateMaxParticipants(maxParticipants);
@@ -33,12 +33,12 @@ namespace Analogix_Backend_App.ApplicationCore.Services
                 creatorId
             );
 
-            _eventRepository.Create(newEvent);
+            _eventRepository.Create(newEvent, gameTags);
 
             return newEvent;
         }
 
-        public Event Update(long id, string title, string? description, string location, DateTime startDate, DateTime? endDate, int maxParticipants, long creatorId)
+        public Event Update(long id, string title, string? description, string location, DateTime startDate, DateTime? endDate, int maxParticipants, long creatorId, IReadOnlyCollection<string>? gameTags)
         {
             ValidateStartDate(startDate);
             ValidateMaxParticipants(maxParticipants);
@@ -57,7 +57,7 @@ namespace Analogix_Backend_App.ApplicationCore.Services
             existing.EndDate = endDate;
             existing.MaxParticipants = maxParticipants;
 
-            return _eventRepository.Update(existing);
+            return _eventRepository.Update(existing, gameTags);
 
 
         }
@@ -74,9 +74,9 @@ namespace Analogix_Backend_App.ApplicationCore.Services
             _eventRepository.Delete(existing);  
         }
 
-        public List<Event> GetAll()
+        public List<Event> GetAll(string? gameTag =null)
         {
-            return _eventRepository.GetAll();
+            return _eventRepository.GetAll(gameTag);
         }
 
         public Event? GetById(long id)

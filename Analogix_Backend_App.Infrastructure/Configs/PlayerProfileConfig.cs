@@ -54,6 +54,28 @@ namespace Analogix_Backend_App.Infrastructure.Database.Configs
                    .HasConstraintName("FK_PlayerProfiles_Users_UserId")
                    .OnDelete(DeleteBehavior.Cascade); // When a User is deleted, the associated PlayerProfile will also be deleted (cascading delete).
 
+            // Relationships with GameTags (Many-to-Many)
+
+            builder.HasMany(e => e.FavoriteGameTags)
+                   .WithMany(gt => gt.PlayerProfiles)
+                   .UsingEntity<Dictionary<string, object>>(
+                        "PlayerProfileGameTag",
+                        jr => jr.HasOne<GameTag>() // each entry in the join table has one GameTag
+                                .WithMany()
+                                .HasForeignKey("GameTagId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .HasConstraintName("FK_ProfileGameTags_GameTags_GameTagId"),
+                        jl => jl.HasOne<PlayerProfile>() // each entry in the join table has one PlayerProfile
+                                .WithMany()
+                                .HasForeignKey("PlayerProfileId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .HasConstraintName("FK_ProfileGameTags_PlayerProfiles_PlayerProfileId"),
+                        join =>
+                        {
+                            join.ToTable("PlayerProfileGameTags");
+                            join.HasKey("PlayerProfileId", "GameTagId").HasName("PK_PlayerProfileGameTags");
+                        });
+
         }
     }
 }

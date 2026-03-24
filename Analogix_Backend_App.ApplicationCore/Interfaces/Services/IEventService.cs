@@ -7,11 +7,11 @@ namespace Analogix_Backend_App.ApplicationCore.Interfaces.Services
 {
     public interface IEventService
     {
-        Event Create(string title, string? description, string location, DateTime startDate, DateTime? endDate, int maxParticipants, long creatorId);
-        Event Update(long id, string title, string? description, string location, DateTime startDate, DateTime? endDate, int maxParticipants, long creatorId);
+        Event Create(string title, string? description, string location, DateTime startDate, DateTime? endDate, int maxParticipants, long creatorId, IReadOnlyCollection<string>? gameTags);
+        Event Update(long id, string title, string? description, string location, DateTime startDate, DateTime? endDate, int maxParticipants, long creatorId, IReadOnlyCollection<string>? gameTags);
         void Delete (long creatorId, long eventId);
         Event? GetById(long id);
-        List<Event> GetAll();
+        List<Event> GetAll(string? gameTag = null);
 
 
     }

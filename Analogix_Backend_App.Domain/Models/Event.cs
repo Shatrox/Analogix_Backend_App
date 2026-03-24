@@ -20,6 +20,7 @@ namespace Analogix_Backend_App.Domain.Models
         public ICollection<EventSubscription> Subscriptions { get; set; } = new List<EventSubscription>();
         public ICollection<Rating> Ratings { get; set; } = new List<Rating>(); 
         public ICollection<EventFaq> EventFaq { get; set; } = new List<EventFaq>();
+        public ICollection<GameTag> GameTags { get; set; } = new List<GameTag>();
 
         private Event() { } // Private constructor for EF Core  
 

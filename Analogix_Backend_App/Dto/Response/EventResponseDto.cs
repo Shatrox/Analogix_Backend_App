@@ -11,5 +11,8 @@
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int MaxParticipants { get; set; }
+
+        // GameTags is a collection of strings representing the tags associated with the event.
+        public IReadOnlyCollection<string> GameTags{ get; set; } = Array.Empty<string>(); // ensure collection is never null, even if there are no tags
     }
 }
