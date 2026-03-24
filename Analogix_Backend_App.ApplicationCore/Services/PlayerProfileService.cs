@@ -19,7 +19,7 @@ namespace Analogix_Backend_App.ApplicationCore.Services
         }
 
 
-        public PlayerProfile Create(long userID, string? biography, string favoriteGames, MasteryLevel masteryLevel) 
+        public PlayerProfile Create(long userID, string? biography, string favoriteGames, MasteryLevel masteryLevel, IReadOnlyCollection<string>? favoriteGameTags) 
         {
             if (_playerProfileRepository.GetPlayerProfileByUserId(userID) is not null) 
             { 
@@ -37,10 +37,10 @@ namespace Analogix_Backend_App.ApplicationCore.Services
             );
 
 
-            return _playerProfileRepository.CreatePlayerProfile(profile);
+            return _playerProfileRepository.CreatePlayerProfile(profile, favoriteGameTags);
         }
 
-        public PlayerProfile Update(long userID, string? biography, string favoriteGames, MasteryLevel masteryLevel) 
+        public PlayerProfile Update(long userID, string? biography, string favoriteGames, MasteryLevel masteryLevel, IReadOnlyCollection<string>? favoriteGameTags) 
 
         { 
         
@@ -57,7 +57,7 @@ namespace Analogix_Backend_App.ApplicationCore.Services
                 userID
             );
 
-            return _playerProfileRepository.UpdatePlayerProfile(profileToUpdate);
+            return _playerProfileRepository.UpdatePlayerProfile(profileToUpdate, favoriteGameTags);
         }
 
        

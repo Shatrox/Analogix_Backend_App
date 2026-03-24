@@ -8,12 +8,12 @@ namespace Analogix_Backend_App.ApplicationCore.Interfaces.Repositories
     public interface IEventRepository
     {
 
-        Event Create(Event data);
-        Event Update(Event data);
+        Event Create(Event data, IReadOnlyCollection<string>? gameTags);
+        Event Update(Event data, IReadOnlyCollection<string>? gameTags);
         void Delete(Event data);
         Event? GetById(long id);
         Event? GetByIdWithSubscriptions(long id);
-        List<Event> GetAll();
+        List<Event> GetAll(string? gameTag = null);
 
     }
 }

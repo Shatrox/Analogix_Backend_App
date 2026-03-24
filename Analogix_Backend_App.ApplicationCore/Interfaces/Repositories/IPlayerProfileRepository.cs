@@ -8,13 +8,13 @@ namespace Analogix_Backend_App.ApplicationCore.Interfaces.Repositories
     public interface IPlayerProfileRepository
     {
         // Method to create a new player profile
-        PlayerProfile CreatePlayerProfile(PlayerProfile data);
+        PlayerProfile CreatePlayerProfile(PlayerProfile data, IReadOnlyCollection<string>? favoriteGameTags );
 
         // Method to get a player profile by user ID
-        PlayerProfile GetPlayerProfileByUserId(long userId);
+        PlayerProfile? GetPlayerProfileByUserId(long userId);
 
         // Method to update an existing player profile
-        PlayerProfile UpdatePlayerProfile(PlayerProfile data);
+        PlayerProfile UpdatePlayerProfile(PlayerProfile data, IReadOnlyCollection<string>? favoriteGameTags);
 
 
     }

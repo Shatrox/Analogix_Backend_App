@@ -22,6 +22,7 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Dto.Request
         [Required]
         [Range(2, 300)]
         public required int MaxParticipants { get; set; }
+        public List<string> GameTags { get; set; } = new();
 
 
     }

@@ -17,6 +17,9 @@ namespace Analogix_Backend_App.Domain.Models
         public long UserId { get; set; }
 
 
+        public ICollection<GameTag> FavoriteGameTags { get; set; } = new List<GameTag>(); 
+
+
         private PlayerProfile() { } // Private constructor for EF Core
 
 

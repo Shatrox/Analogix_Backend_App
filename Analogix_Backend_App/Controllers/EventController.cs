@@ -32,10 +32,10 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
 
             long userId = GetUserId();
 
-            Event created = _eventService.Create(dto.Title, dto.Description, dto.Location, dto.StartDate, dto.EndDate, dto.MaxParticipants, userId);
+            Event created = _eventService.Create(dto.Title, dto.Description, dto.Location, dto.StartDate, dto.EndDate, dto.MaxParticipants, userId, dto.GameTags);
 
 
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, ToDto(created));
 
         }
 
@@ -57,10 +57,11 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
                 dto.StartDate,
                 dto.EndDate,
                 dto.MaxParticipants,
-                userId
+                userId,
+                dto.GameTags
             );
 
-            return Ok(eventUpdated);
+            return Ok(ToDto(eventUpdated));
 
         }
 
@@ -80,10 +81,10 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
 
         [HttpGet]
         [AllowAnonymous] // This attribute allows anonymous access to this specific endpoint, meaning that users do not need to be authenticated to access it.
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] string? gameTag)
         {
-
-            var result = _eventService.GetAll()
+            // This endpoint retrieves all events, optionally filtering by a specific game tag.
+            var result = _eventService.GetAll(gameTag)
                 .Select(ToDto)
                 .ToList();
 
@@ -112,7 +113,9 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
                 Location = ev.Location,
                 StartDate = ev.StartDate,
                 EndDate = ev.EndDate,
-                MaxParticipants = ev.MaxParticipants
+                MaxParticipants = ev.MaxParticipants,
+                //Tags
+                GameTags = ev.GameTags.Select(gt => gt.Name).OrderBy(t => t).ToList() // OrderBy(t => t) -> Lambda expression that sorts the game tags alphabetically
             };
         }
 

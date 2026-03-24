@@ -27,6 +27,11 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
         {
             var existingFaq = _dbContext.EventFaqs.SingleOrDefault(f => f.Id == data.Id);
 
+            if (existingFaq is null)
+            {
+                throw new InvalidOperationException($"Event FAQ not found.");
+            }
+
             existingFaq.Answer = data.Answer;
             existingFaq.AnsweredUserId = data.AnsweredUserId;
             existingFaq.AnsweredAtUtc = data.AnsweredAtUtc;

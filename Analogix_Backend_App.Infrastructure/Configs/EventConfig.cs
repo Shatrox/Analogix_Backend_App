@@ -80,7 +80,26 @@ namespace Analogix_Backend_App.Infrastructure.Database.Configs
                    .OnDelete(DeleteBehavior.Cascade) // When an Event is deleted, all related Subscriptions will also be deleted
                    .HasConstraintName("FK_EventSubscriptions_Events_EventId");
 
-
+            // Many-to-Many relationship between Event and GameTag
+            builder.HasMany(e => e.GameTags)
+                   .WithMany(gt => gt.Events)
+                   .UsingEntity<Dictionary<string, object>>(
+                       "EventGameTag", // Name of the join table
+                       jr => jr.HasOne<GameTag>() // each entry in EventGameTag references one GameTag
+                               .WithMany()
+                               .HasForeignKey("GameTagId")
+                               .OnDelete(DeleteBehavior.Cascade)
+                               .HasConstraintName("FK_EventGameTag_GameTags_GameTagId"),
+                       jl => jl.HasOne<Event>() // each entry in EventGameTag references one Event
+                               .WithMany()
+                               .HasForeignKey("EventId")
+                               .OnDelete(DeleteBehavior.Cascade)
+                               .HasConstraintName("FK_EventGameTag_Events_EventId"),
+                       join =>
+                       {
+                           join.HasKey("EventId", "GameTagId").HasName("PK_EventGameTag");
+                           join.ToTable("EventGameTags");
+                       });
         }
     }
 }

@@ -17,8 +17,14 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
         }
 
 
-        public Event Create(Event data) // allow to create an event
+        public Event Create(Event data, IReadOnlyCollection<string>? gameTags) // allow to create an event
         {
+            var tags = ResolveTags(gameTags);
+
+            foreach (var tag in tags)
+            {
+                data.GameTags.Add(tag);
+            }
             var result = _dbContext.Events.Add(data);
 
             _dbContext.SaveChanges();
@@ -26,9 +32,11 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
             return result.Entity;
         }
 
-        public Event Update(Event data)
+        public Event Update(Event data, IReadOnlyCollection<string>? gameTags)
         {
-            var existingEvent = _dbContext.Events.FirstOrDefault(e => e.Id == data.Id); // find the existing event by ID
+            var existingEvent = _dbContext.Events
+                .Include(e => e.GameTags) // include related GameTags for updating
+                .SingleOrDefault(e => e.Id == data.Id); // find the existing event by ID
 
             if (existingEvent == null) 
             {
@@ -41,7 +49,7 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
             existingEvent.StartDate = data.StartDate;
             existingEvent.EndDate = data.EndDate;
 
-
+            SyncTags(existingEvent.GameTags,gameTags);
 
             _dbContext.SaveChanges();
 
@@ -55,8 +63,24 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
 
         }
 
-        public List<Event> GetAll()
+        public List<Event> GetAll(string? gameTag = null)
         {
+            // allow to retrieve all events, optionally filtering by a specific game tag
+            IQueryable<Event> query = _dbContext.Events.Include(e => e.GameTags);
+
+            // checks if a game tag is provided
+            if (!string.IsNullOrWhiteSpace(gameTag)) 
+            { 
+                // if yes, it normalizes the game tag
+                string normalized = GameTag.Normalize(gameTag);
+                // and filters the events to include only those that have a matching normalized game tag
+                query = query.Where(e => e.GameTags.Any(t => t.NormalizedName == normalized));
+
+
+            }
+
+
+            // otherwise, it retrieves all events without filtering and orders them by their start date before returning the list
             return _dbContext.Events
                 .OrderBy(e => e.StartDate)
                 .ToList();
@@ -72,8 +96,66 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
         {
             return _dbContext.Events
                 .Include(e => e.Subscriptions)
+                .Include(e => e.GameTags)
                 .SingleOrDefault(e => e.Id == id);
 
+        }
+
+        private void SyncTags(ICollection<GameTag> currentTag, IReadOnlyCollection<string>? requestedTag) 
+        { 
+            // allow to update the tags of an event, by comparing the current tags with the requested tags and adding or removing tags as necessary
+            currentTag.Clear();
+            var tags = ResolveTags(requestedTag);
+            foreach (var tag in tags) 
+            {
+                currentTag.Add(tag);
+            }
+
+
+
+
+        }
+
+        private List<GameTag> ResolveTags(IReadOnlyCollection<string>? tagNames) 
+        { 
+            // Removes empty values, extra spaces, and duplicates from the input collection
+            var clean = (tagNames ?? Array.Empty<string>())
+                .Select(t => t.Trim()) // remove extra spaces
+                .Where(t => !string.IsNullOrEmpty(t)) // empty values
+                .Distinct() // prevent duplicates
+                .ToList();
+
+            // If there are no valid tags after cleaning, return an empty list
+            if (clean.Count == 0) 
+            {
+                return new List<GameTag>();
+            }
+            // Normalize the cleaned tag names to ensure consistent formatting
+            var normalized = clean.Select(GameTag.Normalize).ToList();
+
+            // Query the database for existing GameTag entities that match the normalized tag names
+            var existingTags = _dbContext.GameTags
+                .Where(t => normalized.Contains(t.NormalizedName))
+                .ToList();
+            //
+            var byNormalized = existingTags.ToDictionary(t => t.NormalizedName, t => t);
+            var result = new List<GameTag>();
+
+            foreach (var tagName in clean)
+            {
+                var normalizedTagName = GameTag.Normalize(tagName);
+                if (!byNormalized.TryGetValue(normalizedTagName, out var tag))
+                {
+                    tag = new GameTag(tagName);
+                    _dbContext.GameTags.Add(tag);
+                    byNormalized[normalizedTagName] = tag;
+                }
+
+                result.Add(tag);
+
+            }
+
+            return result;
         }
 
     }

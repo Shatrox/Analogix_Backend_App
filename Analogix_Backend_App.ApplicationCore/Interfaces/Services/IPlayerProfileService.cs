@@ -9,8 +9,8 @@ namespace Analogix_Backend_App.ApplicationCore.Interfaces.Services
     // Interface for player profile service
     public interface IPlayerProfileService
     {
-        PlayerProfile Create (long userID, string? biography, string favoriteGames, MasteryLevel masteryLevel);
-        PlayerProfile Update (long userID, string? biography, string favoriteGames, MasteryLevel masteryLevel);
+        PlayerProfile Create (long userID, string? biography, string favoriteGames, MasteryLevel masteryLevel, IReadOnlyCollection<string>? favoriteGameTags);
+        PlayerProfile Update (long userID, string? biography, string favoriteGames, MasteryLevel masteryLevel, IReadOnlyCollection<string>? favoriteGameTags);
 
     }
 }
