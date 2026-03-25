@@ -16,7 +16,7 @@ namespace Analogix_Backend_App.Domain.Models
         public Event Event { get; set; } = default!;
 
         public long ReportedPlayerId { get; set; }
-        public User ReportedPlayer { get; set; } = default!; = default!;
+        public User ReportedPlayer { get; set; } = default!; 
 
         public ReasonsToReport Reason { get; set; } 
         public string Description { get; set; } = default!;
@@ -54,6 +54,11 @@ namespace Analogix_Backend_App.Domain.Models
             {
                 throw new ArgumentException("Description is required!", nameof(description));
             }
+
+            if (reporterId == reportedPlayerId) 
+            { 
+                throw new ArgumentException("Reporter cannot report themselves!", nameof(reporterId));
+            }
             
             description = description.Trim();
 
@@ -85,6 +90,11 @@ namespace Analogix_Backend_App.Domain.Models
                 throw new ArgumentException("Report status cannot be set to pending during review!", nameof(newStatus));
             }
 
+            if (ReportStatus != ReportStatus.Pending || ReportStatus != ReportStatus.InReview)
+            {
+                throw new ArgumentException("Only Pending or InReview reports can be reviewed");
+            }
+
             if (!string.IsNullOrWhiteSpace(reviewNote)) 
             { 
                 reviewNote = reviewNote.Trim();
@@ -99,7 +109,7 @@ namespace Analogix_Backend_App.Domain.Models
             ReportStatus = newStatus;
             ReviewerId = reviewerId;
             ReviewedAtUtc = DateTime.UtcNow;
-            ReviewNote = reviewNote;
+            ReviewNote = string.IsNullOrWhiteSpace(reviewNote) ? null : reviewNote;
         }
     }
 }
