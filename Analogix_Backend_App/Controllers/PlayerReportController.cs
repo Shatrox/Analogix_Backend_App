@@ -63,6 +63,7 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
         }
 
         [HttpPatch("{reportId:long}/review")]
+        [Authorize(Policy = "AdminOnly")]
         public IActionResult ReviewReport(long reportId, [FromBody] PlayerReportReviewRequestDto dto)
         {
             if (dto == null || !ModelState.IsValid) 

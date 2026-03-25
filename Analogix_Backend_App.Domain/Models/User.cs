@@ -43,7 +43,7 @@ namespace Analogix_Backend_App.Domain.Models
             Username = username;
             Password = password;
             Email = email;
-            Role = UserRoles.User; // Default role is set to User!
+            Role = role; // Default role is set to User!
 
 
         }

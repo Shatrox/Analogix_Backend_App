@@ -83,14 +83,14 @@ namespace Analogix_Backend_App.Infrastructure.Database.Configs
             // Many-to-Many relationship between Event and GameTag
             builder.HasMany(e => e.GameTags)
                    .WithMany(gt => gt.Events)
-                   .UsingEntity<Dictionary<string, object>>(
+                   .UsingEntity(
                        "EventGameTag", // Name of the join table
-                       jr => jr.HasOne<GameTag>() // each entry in EventGameTag references one GameTag
+                       jr => jr.HasOne(typeof(GameTag)) // each entry in EventGameTag references one GameTag
                                .WithMany()
                                .HasForeignKey("GameTagId")
                                .OnDelete(DeleteBehavior.Cascade)
                                .HasConstraintName("FK_EventGameTag_GameTags_GameTagId"),
-                       jl => jl.HasOne<Event>() // each entry in EventGameTag references one Event
+                       jl => jl.HasOne(typeof(Event)) // each entry in EventGameTag references one Event
                                .WithMany()
                                .HasForeignKey("EventId")
                                .OnDelete(DeleteBehavior.Cascade)

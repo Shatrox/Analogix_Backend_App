@@ -1,5 +1,6 @@
 ﻿using Analogix_Backend_App.ApplicationCore.Interfaces.Repositories;
 using Analogix_Backend_App.ApplicationCore.Interfaces.Services;
+using Analogix_Backend_App.Domain.Enums;
 using Analogix_Backend_App.Domain.Models;
 using Microsoft.Extensions.Logging;
 using System;
@@ -100,5 +101,27 @@ namespace Analogix_Backend_App.ApplicationCore.Services
             }
         }
 
+        public Event TransferOwnership(long eventId, long currentOwnerId, long newOwnerId)
+        {
+            if (newOwnerId <= 0)
+            {
+                throw new ArgumentException("New owner Id is invalid");
+            }
+
+            Event ev = _eventRepository.GetByIdWithSubscriptions(eventId) ?? throw new KeyNotFoundException("Event not found");
+
+            if (ev.CreatorId != currentOwnerId) { throw new UnauthorizedAccessException("Only the current owner can transfer ownership"); }
+
+            if (currentOwnerId == newOwnerId) { throw new InvalidOperationException("You are already the owner!"); }
+
+            bool isAcceptedParticipant = ev.Subscriptions.Any(s => 
+            s.UserId == newOwnerId &&
+            s.Status == SubscriptionStatus.Accepted);
+
+            if (!isAcceptedParticipant) { throw new InvalidOperationException("New owner must be an accepted member of this event"); }
+
+            return _eventRepository.TransferOwnership(eventId, newOwnerId);
+
+        }
     }
 }

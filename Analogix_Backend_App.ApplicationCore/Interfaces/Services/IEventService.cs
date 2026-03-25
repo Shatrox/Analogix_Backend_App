@@ -12,6 +12,7 @@ namespace Analogix_Backend_App.ApplicationCore.Interfaces.Services
         void Delete (long creatorId, long eventId);
         Event? GetById(long id);
         List<Event> GetAll(string? gameTag = null);
+        Event TransferOwnership(long eventId, long currentOwnerId, long newOwnerId);
 
 
     }

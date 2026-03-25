@@ -78,6 +78,23 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
 
         }
 
+        [HttpPatch("event/{id:long}/transfer-ownership")]
+        public IActionResult TransferOwnership(long id, [FromBody] EventTransferOwnershipRequestDto dto) 
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            long userId = GetUserId();
+
+            Event update = _eventService.TransferOwnership(id, userId, dto.newOwnerId);
+
+            return Ok(ToDto(update));
+
+        }
+
 
         [HttpGet]
         [AllowAnonymous] // This attribute allows anonymous access to this specific endpoint, meaning that users do not need to be authenticated to access it.

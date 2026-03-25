@@ -58,14 +58,14 @@ namespace Analogix_Backend_App.Infrastructure.Database.Configs
 
             builder.HasMany(e => e.FavoriteGameTags)
                    .WithMany(gt => gt.PlayerProfiles)
-                   .UsingEntity<Dictionary<string, object>>(
+                   .UsingEntity(
                         "PlayerProfileGameTag",
-                        jr => jr.HasOne<GameTag>() // each entry in the join table has one GameTag
+                        jr => jr.HasOne(typeof(GameTag)) // each entry in the join table has one GameTag
                                 .WithMany()
                                 .HasForeignKey("GameTagId")
                                 .OnDelete(DeleteBehavior.Cascade)
                                 .HasConstraintName("FK_ProfileGameTags_GameTags_GameTagId"),
-                        jl => jl.HasOne<PlayerProfile>() // each entry in the join table has one PlayerProfile
+                        jl => jl.HasOne(typeof(PlayerProfile)) // each entry in the join table has one PlayerProfile
                                 .WithMany()
                                 .HasForeignKey("PlayerProfileId")
                                 .OnDelete(DeleteBehavior.Cascade)

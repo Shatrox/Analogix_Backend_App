@@ -158,5 +158,15 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
             return result;
         }
 
+        public Event TransferOwnership(long eventId, long newOwnerId)
+        {
+            Event existingEvent = _dbContext.Events.SingleOrDefault(e => e.Id == eventId) ?? throw new KeyNotFoundException("Event Not Found!");
+
+            existingEvent.CreatorId = newOwnerId;
+
+            _dbContext.SaveChanges();
+
+            return existingEvent;
+        }
     }
 }
