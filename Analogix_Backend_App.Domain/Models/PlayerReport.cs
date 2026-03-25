@@ -90,7 +90,7 @@ namespace Analogix_Backend_App.Domain.Models
                 throw new ArgumentException("Report status cannot be set to pending during review!", nameof(newStatus));
             }
 
-            if (ReportStatus != ReportStatus.Pending || ReportStatus != ReportStatus.InReview)
+            if (ReportStatus != ReportStatus.Pending && ReportStatus != ReportStatus.InReview)
             {
                 throw new ArgumentException("Only Pending or InReview reports can be reviewed");
             }

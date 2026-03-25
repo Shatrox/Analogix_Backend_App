@@ -15,5 +15,7 @@ namespace Analogix_Backend_App.ApplicationCore.Interfaces.Repositories
         Event? GetByIdWithSubscriptions(long id);
         List<Event> GetAll(string? gameTag = null);
 
+        Event TransferOwnership(long eventId, long newOwnerId);
+
     }
 }

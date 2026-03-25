@@ -1,6 +1,7 @@
 using Analogix_Backend_App.ApplicationCore.Interfaces.Repositories;
 using Analogix_Backend_App.ApplicationCore.Interfaces.Services;
 using Analogix_Backend_App.ApplicationCore.Services;
+using Analogix_Backend_App.Domain.Enums;
 using Analogix_Backend_App.Infrastructure.Database;
 using Analogix_Backend_App.Infrastructure.Database.Repositories;
 using Analogix_Backend_App.Presentation.WebAPI.Configs;
@@ -63,7 +64,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     };
                 });
 
-
+// Admin Authorization
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => 
+    policy.RequireRole(nameof(UserRoles.Admin)));
+});
 
 
 
