@@ -81,6 +81,18 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
             };
         }
 
+        [HttpGet("my-profile")]
+        public IActionResult GetMyProfile() 
+        {
+            long userId = GetUserId();
+            PlayerProfile? profile = _playerProfileService.GetByUserId(userId);
+            if (profile is null) 
+            {
+                return NotFound("Player profile not found for the current user.");
+            }
+            return Ok(ToDto(profile));
+        }
+
         private long GetUserId() // Allows us to retrieve the user ID from the claims of the authenticated user.
         {
 

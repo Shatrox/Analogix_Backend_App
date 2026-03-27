@@ -11,6 +11,7 @@ namespace Analogix_Backend_App.ApplicationCore.Interfaces.Services
     {
         PlayerProfile Create (long userID, string? biography, string favoriteGames, MasteryLevel masteryLevel, IReadOnlyCollection<string>? favoriteGameTags);
         PlayerProfile Update (long userID, string? biography, string favoriteGames, MasteryLevel masteryLevel, IReadOnlyCollection<string>? favoriteGameTags);
+        PlayerProfile? GetByUserId(long userID);
 
     }
 }

@@ -60,6 +60,11 @@ namespace Analogix_Backend_App.ApplicationCore.Services
             return _playerProfileRepository.UpdatePlayerProfile(profileToUpdate, favoriteGameTags);
         }
 
-       
+        public PlayerProfile? GetByUserId(long userID)
+        {
+            return _playerProfileRepository.GetPlayerProfileByUserId(userID);
+        }
+
+
     }
 }
