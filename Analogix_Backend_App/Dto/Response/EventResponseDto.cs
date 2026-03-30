@@ -5,6 +5,7 @@
 
         public long Id { get; set; }
         public long creatorId { get; set; }
+        public string? CreatorName { get; set; }
         public string Title { get; set; } = default!;
         public string? Description { get; set; }
         public string Location { get; set; } = default!;
@@ -14,5 +15,6 @@
 
         // GameTags is a collection of strings representing the tags associated with the event.
         public IReadOnlyCollection<string> GameTags{ get; set; } = Array.Empty<string>(); // ensure collection is never null, even if there are no tags
+        public List<string> Participants { get; set; } = new List<string>();
     }
 }

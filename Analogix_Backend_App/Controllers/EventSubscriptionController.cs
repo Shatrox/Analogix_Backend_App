@@ -53,6 +53,18 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
                 .ToList());
         }
 
+        [HttpGet("my-subscriptions")]
+        public IActionResult GetMySubscriptions() 
+        {
+
+            var userId = GetUserId();
+            List<EventSubscription> subscriptions = _eventSubscriptionService.GetSubscriptionsForUser(userId);
+
+            return Ok(subscriptions.Select(ToDto).ToList());
+        
+        
+        }
+
         // This endpoint allows the event owner to accept a subscription request from a user.
         [HttpPatch("subscription/{subscriptionId}/accept")]
         public IActionResult Accept(long subscriptionId) 

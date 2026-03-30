@@ -12,6 +12,7 @@ namespace Analogix_Backend_App.ApplicationCore.Interfaces.Repositories
         Event Update(Event data, IReadOnlyCollection<string>? gameTags);
         void Delete(Event data);
         Event? GetById(long id);
+        List<Event> GetEventsUserParticipated(long userId);
         Event? GetByIdWithSubscriptions(long id);
         List<Event> GetAll(string? gameTag = null);
 

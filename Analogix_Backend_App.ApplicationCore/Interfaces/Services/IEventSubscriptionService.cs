@@ -12,6 +12,7 @@ namespace Analogix_Backend_App.ApplicationCore.Interfaces.Services
         EventSubscription Unsubscribe(long userId, long eventId); // Participant cancels their subscription
         EventSubscription SetStatus(long subscriptionId, long creatorId, SubscriptionStatus status); // Event creator accepts or rejects a subscription
         List<EventSubscription> GetSubscriptionsForOwner(long creatorId, long eventId); // Get all subscriptions for an event owned by the creator
+        List<EventSubscription> GetSubscriptionsForUser(long userId);
 
     }
 }

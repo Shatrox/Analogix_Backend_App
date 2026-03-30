@@ -14,6 +14,7 @@ namespace Analogix_Backend_App.ApplicationCore.Interfaces.Repositories
             EventSubscription? GetByIdWithEvent(long id); // Get a subscription by its ID along with the associated event   
             List<EventSubscription> GetByEventId(long eventId); // Get all subscriptions for a specific event
             EventSubscription? GetByEventIdAndUserId(long eventId, long userId); // Check if a user is already subscribed to an event
+            List<EventSubscription> GetByUserId(long userId);
 
     }
 }
