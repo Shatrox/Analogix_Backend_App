@@ -66,7 +66,9 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
         public List<Event> GetAll(string? gameTag = null)
         {
             // allow to retrieve all events, optionally filtering by a specific game tag
-            IQueryable<Event> query = _dbContext.Events.Include(e => e.GameTags);
+            IQueryable<Event> query = _dbContext.Events
+                .Include(e => e.GameTags)
+                .Include(e => e.Creator);
 
             // checks if a game tag is provided
             if (!string.IsNullOrWhiteSpace(gameTag)) 
@@ -81,7 +83,7 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
 
 
             // otherwise, it retrieves all events without filtering and orders them by their start date before returning the list
-            return _dbContext.Events
+            return query
                 .OrderBy(e => e.StartDate)
                 .ToList();
         }
@@ -167,6 +169,17 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
             _dbContext.SaveChanges();
 
             return existingEvent;
+        }
+
+        public List<Event> GetEventsUserParticipated(long userId)
+        {
+            return _dbContext.Events
+                .Include(e => e.GameTags)
+                .Include(e => e.Creator)
+                .Include(e => e.Subscriptions)
+                    .ThenInclude(s => s.User) 
+                .Where(e => e.CreatorId == userId|| e.Subscriptions.Any(es => es.UserId == userId))
+                .ToList();
         }
     }
 }

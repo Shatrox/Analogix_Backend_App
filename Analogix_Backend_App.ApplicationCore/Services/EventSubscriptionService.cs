@@ -124,7 +124,9 @@ namespace Analogix_Backend_App.ApplicationCore.Services
 
         }
 
-
-
+        public List<EventSubscription> GetSubscriptionsForUser(long userId)
+        {
+            return _eventSubscriptionRepository.GetByUserId(userId);
+        }
     }
 }

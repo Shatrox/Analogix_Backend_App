@@ -67,6 +67,11 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
                 .SingleOrDefault(es => es.Id == id);
         }
 
-        
+        public List<EventSubscription> GetByUserId(long userId)
+        {
+            return _dbContext.EventSubscriptions
+                .Where (es => es.UserId == userId)
+                .ToList ();
+        }
     }
 }

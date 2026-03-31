@@ -123,5 +123,10 @@ namespace Analogix_Backend_App.ApplicationCore.Services
             return _eventRepository.TransferOwnership(eventId, newOwnerId);
 
         }
+
+        public List<Event> GetEventsUserParticipated(long userId)
+        {
+            return _eventRepository.GetEventsUserParticipated(userId);
+        }
     }
 }

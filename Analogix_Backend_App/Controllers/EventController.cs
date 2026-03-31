@@ -96,7 +96,7 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("all-events")]
         [AllowAnonymous] // This attribute allows anonymous access to this specific endpoint, meaning that users do not need to be authenticated to access it.
         public IActionResult GetAll([FromQuery] string? gameTag)
         {
@@ -119,12 +119,28 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
 
         }
 
+        [HttpGet("my-participations")]
+        public IActionResult GetEventsUserParticipated () 
+        { 
+            long userId = GetUserId();
+
+            var events = _eventService.GetEventsUserParticipated(userId);
+
+            var result = events.Select(ToDto).ToList();
+
+            return Ok(result);
+
+        }
+
+
+
         private static EventResponseDto ToDto(Event ev)
         {
             return new EventResponseDto
             {
                 Id = ev.Id,
                 creatorId = ev.CreatorId,
+                CreatorName = ev.Creator?.Username,
                 Title = ev.Title,
                 Description = ev.Description,
                 Location = ev.Location,
@@ -132,7 +148,12 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
                 EndDate = ev.EndDate,
                 MaxParticipants = ev.MaxParticipants,
                 //Tags
-                GameTags = ev.GameTags.Select(gt => gt.Name).OrderBy(t => t).ToList() // OrderBy(t => t) -> Lambda expression that sorts the game tags alphabetically
+                GameTags = ev.GameTags.Select(gt => gt.Name).OrderBy(t => t).ToList(), // OrderBy(t => t) -> Lambda expression that sorts the game tags alphabetically
+
+                Participants = ev.Subscriptions?
+                    .Where(s => s.User != null)
+                    .Select(s => s.User.Username)
+                    .ToList() ?? new List<string>()
             };
         }
 
@@ -152,5 +173,8 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
             return userId;
 
         }
+
+
+
     }
 }
