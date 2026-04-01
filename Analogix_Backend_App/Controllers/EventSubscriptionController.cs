@@ -99,6 +99,10 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
                 Status = sub.Status,
                 CreatedAt = sub.CreatedAt,
                 ResponseAt = sub.ResponseAt,
+                CreatorName = sub.Event.Creator?.Username,
+                EventTitle = sub.Event.Title,
+                EventLocation = sub.Event.Location,
+                UserName = sub.User?.Username
             };
         }
 

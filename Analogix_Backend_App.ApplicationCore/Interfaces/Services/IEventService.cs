@@ -11,8 +11,10 @@ namespace Analogix_Backend_App.ApplicationCore.Interfaces.Services
         Event Update(long id, string title, string? description, string location, DateTime startDate, DateTime? endDate, int maxParticipants, long creatorId, IReadOnlyCollection<string>? gameTags);
         void Delete (long creatorId, long eventId);
         Event? GetById(long id);
+        List<Event> GetEventsCreatedByUser(long userId);
         List<Event> GetEventsUserParticipated(long userId);
         List<Event> GetAll(string? gameTag = null);
+        List<Event> GetEventsNotOwnedByUser(long userId);
         Event TransferOwnership(long eventId, long currentOwnerId, long newOwnerId);
 
 

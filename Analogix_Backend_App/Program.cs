@@ -40,7 +40,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => 
+    {
+
+        options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    
+    });
 
 
 // Configuration of JWT Authentication
@@ -112,9 +118,9 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.UseCors();
-
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthentication(); // This line adds the authentication middleware to the HTTP request pipeline, enabling the application to authenticate users based on the configured JWT authentication scheme. It ensures that incoming requests are processed for authentication before reaching the authorization middleware.
 
