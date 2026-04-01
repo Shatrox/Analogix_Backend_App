@@ -1,4 +1,5 @@
 ﻿using Analogix_Backend_App.ApplicationCore.Interfaces.Repositories;
+using Analogix_Backend_App.Domain.Enums;
 using Analogix_Backend_App.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -68,7 +69,9 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
             // allow to retrieve all events, optionally filtering by a specific game tag
             IQueryable<Event> query = _dbContext.Events
                 .Include(e => e.GameTags)
-                .Include(e => e.Creator);
+                .Include(e => e.Creator)
+                .Where(e => e.StartDate > DateTime.UtcNow);
+                
 
             // checks if a game tag is provided
             if (!string.IsNullOrWhiteSpace(gameTag)) 
@@ -88,9 +91,25 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
                 .ToList();
         }
 
-        public Event? GetById(long id)
+        public List<Event> GetEventsNotOwnedByUser(long userId)
         {
-           return _dbContext.Events.SingleOrDefault(e => e.Id == id);
+            // allow to retrieve events that are not owned by a specific user
+            return _dbContext.Events
+                .Include(e => e.GameTags)
+                .Include(e => e.Creator)
+                .Where(e => e.CreatorId != userId && e.StartDate > DateTime.UtcNow)
+                .OrderBy(e => e.StartDate)
+                .ToList();
+        }
+
+        public Event? GetById(long id) 
+        {
+           return _dbContext.Events
+                .Include(e => e.GameTags)
+                .Include(e => e.Creator)
+                .Include(e => e.Subscriptions.Where(s => s.Status == SubscriptionStatus.Accepted))
+                    .ThenInclude(s => s.User)
+                .SingleOrDefault(e => e.Id == id);
 
         }
 
@@ -179,6 +198,17 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
                 .Include(e => e.Subscriptions)
                     .ThenInclude(s => s.User) 
                 .Where(e => e.CreatorId == userId|| e.Subscriptions.Any(es => es.UserId == userId))
+                .ToList();
+        }
+
+        public List<Event> GetMyEvents(long userId)
+        {
+            return _dbContext.Events
+                .Include(e => e.GameTags)
+                .Include(e => e.Creator)
+                .Include(e => e.Subscriptions.Where(s => s.Status == SubscriptionStatus.Accepted))
+                    .ThenInclude(s => s.User)
+                .Where(e => e.CreatorId == userId)
                 .ToList();
         }
     }

@@ -27,7 +27,10 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
 
         public EventSubscription Update(EventSubscription data)
         {
-            var existingSubscription = _dbContext.EventSubscriptions.FirstOrDefault(es => es.Id == data.Id);
+            var existingSubscription = _dbContext.EventSubscriptions
+                .Include(es => es.Event)
+                    .ThenInclude(e => e.Creator)
+                .FirstOrDefault(es => es.Id == data.Id);
 
             if (existingSubscription == null)
             {
@@ -44,6 +47,7 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
         public List<EventSubscription> GetByEventId(long eventId)
         {
             return _dbContext.EventSubscriptions
+                .Include(e => e.User)
                 .Where(es => es.EventId == eventId)
                 .ToList();
         }
@@ -70,6 +74,8 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
         public List<EventSubscription> GetByUserId(long userId)
         {
             return _dbContext.EventSubscriptions
+                .Include(es => es.Event)
+                    .ThenInclude(e => e.Creator)
                 .Where (es => es.UserId == userId)
                 .ToList ();
         }

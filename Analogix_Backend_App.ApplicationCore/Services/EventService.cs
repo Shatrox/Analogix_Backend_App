@@ -46,8 +46,9 @@ namespace Analogix_Backend_App.ApplicationCore.Services
 
             var existing = _eventRepository.GetById(id) ?? throw new KeyNotFoundException($"Event with ID {id} not found.");
 
-            if(existing.CreatorId != creatorId) {
-            
+            if (existing.CreatorId != creatorId)
+            {
+
                 throw new UnauthorizedAccessException("You are not authorized to update this event.");
             }
 
@@ -66,18 +67,23 @@ namespace Analogix_Backend_App.ApplicationCore.Services
         public void Delete(long creatorId, long eventId)
         {
             var existing = _eventRepository.GetById(eventId) ?? throw new KeyNotFoundException($"Event with ID {eventId} not found.");
-            
+
             if (existing.CreatorId != creatorId)
             {
                 throw new UnauthorizedAccessException("You are not authorized to delete this event.");
             }
 
-            _eventRepository.Delete(existing);  
+            _eventRepository.Delete(existing);
         }
 
-        public List<Event> GetAll(string? gameTag =null)
+        public List<Event> GetAll(string? gameTag = null)
         {
             return _eventRepository.GetAll(gameTag);
+        }
+
+        public List<Event> GetEventsNotOwnedByUser(long userId)
+        {
+            return _eventRepository.GetEventsNotOwnedByUser(userId);
         }
 
         public Event? GetById(long id)
@@ -114,7 +120,7 @@ namespace Analogix_Backend_App.ApplicationCore.Services
 
             if (currentOwnerId == newOwnerId) { throw new InvalidOperationException("You are already the owner!"); }
 
-            bool isAcceptedParticipant = ev.Subscriptions.Any(s => 
+            bool isAcceptedParticipant = ev.Subscriptions.Any(s =>
             s.UserId == newOwnerId &&
             s.Status == SubscriptionStatus.Accepted);
 
@@ -127,6 +133,11 @@ namespace Analogix_Backend_App.ApplicationCore.Services
         public List<Event> GetEventsUserParticipated(long userId)
         {
             return _eventRepository.GetEventsUserParticipated(userId);
+        }
+
+        public List<Event> GetEventsCreatedByUser(long userId)
+        {
+            return _eventRepository.GetMyEvents(userId);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Analogix_Backend_App.ApplicationCore.Interfaces.Services;
+using Analogix_Backend_App.Domain.Enums;
 using Analogix_Backend_App.Domain.Models;
 using Analogix_Backend_App.Presentation.WebAPI.Dto.Request;
 using Analogix_Backend_App.Presentation.WebAPI.Dto.Response;
@@ -109,6 +110,18 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
 
         }
 
+        [HttpGet("all-events-not-owned")]
+        public IActionResult GetEventsNotOwnedByUser()
+        {
+            long userId = GetUserId();
+
+            var events = _eventService.GetEventsNotOwnedByUser(userId);
+
+            var result = events.Select(ToDto).ToList();
+
+            return Ok(result);
+        }
+
         [HttpGet("events/{id:long}")]
         [AllowAnonymous]
         public IActionResult GetById(long id)
@@ -132,10 +145,29 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
 
         }
 
+        [HttpGet("my-events")]
+        public IActionResult GetMyEvents()
+        {
+            long userId = GetUserId();
+            var events = _eventService.GetEventsCreatedByUser(userId);
+            var result = events.Select(ToDto).ToList();
+            return Ok(result);
+        }
+
 
 
         private static EventResponseDto ToDto(Event ev)
         {
+            var participants = ev.Subscriptions?
+                    .Where(s => s.Status == SubscriptionStatus.Accepted && s.User != null)
+                    .Select(s => s.User.Username)
+                    .ToList() ?? new List<string>();
+
+            if (!string.IsNullOrEmpty(ev.Creator?.Username) && !participants.Contains(ev.Creator.Username))
+            {
+                participants.Insert(0, ev.Creator.Username);
+            }
+
             return new EventResponseDto
             {
                 Id = ev.Id,
@@ -149,11 +181,9 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
                 MaxParticipants = ev.MaxParticipants,
                 //Tags
                 GameTags = ev.GameTags.Select(gt => gt.Name).OrderBy(t => t).ToList(), // OrderBy(t => t) -> Lambda expression that sorts the game tags alphabetically
+                Participants = participants
 
-                Participants = ev.Subscriptions?
-                    .Where(s => s.User != null)
-                    .Select(s => s.User.Username)
-                    .ToList() ?? new List<string>()
+
             };
         }
 
