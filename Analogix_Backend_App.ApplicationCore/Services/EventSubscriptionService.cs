@@ -28,10 +28,21 @@ namespace Analogix_Backend_App.ApplicationCore.Services
 
             // Verifies if you have already subscribed or if you were refused already
             var alreadysubscribed = _eventSubscriptionRepository.GetByEventIdAndUserId(eventId, userId);
-            if (alreadysubscribed is not null && alreadysubscribed.Status!= SubscriptionStatus.Refused)
-            {
-                throw new InvalidOperationException("You are already subscribed to this event.");
-            } 
+            if (alreadysubscribed is not null)
+            { 
+                if (alreadysubscribed.Status == SubscriptionStatus.Refused || alreadysubscribed.Status == SubscriptionStatus.Deleted) 
+                {
+                    alreadysubscribed.SetStatus(SubscriptionStatus.Pending);
+                    return _eventSubscriptionRepository.Update(alreadysubscribed);
+
+                }
+                else
+                {
+                    throw new InvalidOperationException("You are already subscribed to this event.");
+                }
+
+            }
+           
 
             int acceptedCount = ev.Subscriptions.Count(s => s.Status == SubscriptionStatus.Accepted);
 
