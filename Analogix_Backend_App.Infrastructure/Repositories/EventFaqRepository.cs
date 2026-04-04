@@ -1,5 +1,6 @@
 ﻿using Analogix_Backend_App.ApplicationCore.Interfaces.Repositories;
 using Analogix_Backend_App.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -49,14 +50,18 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
 
         public List<EventFaq> GetByEventId(long eventId)
         {
-            return _dbContext.EventFaqs.Where(f => f.EventId == eventId)
+            return _dbContext.EventFaqs.Include(f => f.AuthorUser)
+                                       .Include(f => f.AnsweredUser)
+                                       .Where(f => f.EventId == eventId)                             
                                        .OrderByDescending(f => f.AskedAtUtc)
                                        .ToList();
         }
 
         public EventFaq? GetById(long id)
         {
-            return _dbContext.EventFaqs.SingleOrDefault(f => f.Id == id);
+            return _dbContext.EventFaqs.Include(f => f.AuthorUser)
+                                       .Include(f => f.AnsweredUser)
+                                       .SingleOrDefault(f => f.Id == id);
         }
 
         

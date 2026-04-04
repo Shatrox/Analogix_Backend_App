@@ -4,11 +4,13 @@
     {
         public long Id { get; set; }
         public long EventId { get; set; }
+        public string? AuthorUserName { get; set; }
         public long AuthorUserId { get; set; }
         public string Question { get; set; } = default!;
         public DateTime AskedAtUtc { get; set; }
         public string? Answer { get; set; } 
         public long? AnsweredUserId { get; set; }
+        public string? AnsweredUserName { get; set; }
         public DateTime? AnsweredAtUtc { get; set; }
 
     }

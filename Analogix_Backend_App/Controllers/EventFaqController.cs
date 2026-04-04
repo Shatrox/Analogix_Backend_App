@@ -111,10 +111,12 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
                 Id = faq.Id,
                 EventId = faq.EventId,
                 AuthorUserId = faq.AuthorUserId,
+                AuthorUserName = faq.AuthorUser?.Username,
                 Question = faq.Question,
                 AskedAtUtc = faq.AskedAtUtc,
                 Answer = faq.Answer,
                 AnsweredUserId = faq.AnsweredUserId,
+                AnsweredUserName = faq.AnsweredUser?.Username,
                 AnsweredAtUtc = faq.AnsweredAtUtc
             };
         }
