@@ -53,9 +53,9 @@ namespace Analogix_Backend_App.Domain.Models
 
         public void SetStatus(SubscriptionStatus newStatus)
         {
-            if (newStatus == SubscriptionStatus.Pending)
+            if (newStatus != SubscriptionStatus.Pending && newStatus != SubscriptionStatus.Deleted && newStatus != SubscriptionStatus.Accepted && newStatus != SubscriptionStatus.Refused )
             {
-                throw new ArgumentException("Cannot set status back to Pending.", nameof(newStatus));
+                throw new ArgumentException("", nameof(newStatus));
             }
             Status = newStatus;
             ResponseAt = DateTime.UtcNow;
