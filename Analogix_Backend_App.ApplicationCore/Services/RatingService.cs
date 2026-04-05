@@ -40,7 +40,11 @@ namespace Analogix_Backend_App.ApplicationCore.Services
                 s.UserId == raterUserId &&
                 s.Status == SubscriptionStatus.Accepted);
 
-            if (!isRaterParticipant)
+            // allows owner of the event to rate
+            bool isCreator = ev.CreatorId == raterUserId;
+
+
+            if (!isRaterParticipant && !isCreator)
             {
                 throw new InvalidOperationException("Rater must be accepted at the event to be able to rate players and events");
             }
@@ -135,6 +139,11 @@ namespace Analogix_Backend_App.ApplicationCore.Services
             double averageScore = Math.Round(ratings.Average(r => r.Score), 2, MidpointRounding.AwayFromZero);
 
             return (averageScore, totalRatings);
+        }
+
+        public List<Rating> GetRatingsByRaterForEvent(long eventId, long raterUserId)
+        {
+            return _ratingRepository.GetByRaterForEvent(eventId, raterUserId);
         }
     }
 }

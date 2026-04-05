@@ -10,5 +10,6 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Dto.Response
         public MasteryLevel MasteryLevel { get; set; }
         public long UserId { get; set; }
         public List<string> FavoriteGameTags { get; set; } = new ();
+        public string? UserName { get; set; }
     }
 }

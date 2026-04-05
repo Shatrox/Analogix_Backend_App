@@ -18,6 +18,7 @@ namespace Analogix_Backend_App.ApplicationCore.Interfaces.Repositories
         List<Event> GetAll(string? gameTag = null);
         List<Event> GetEventsNotOwnedByUser(long userId);
         Event TransferOwnership(long eventId, long newOwnerId);
+      
 
     }
 }

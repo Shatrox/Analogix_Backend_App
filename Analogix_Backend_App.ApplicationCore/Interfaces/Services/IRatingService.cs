@@ -13,5 +13,9 @@ namespace Analogix_Backend_App.ApplicationCore.Interfaces.Services
         // Tuple - allows us to return both the average score and the total number of ratings in a single method call
         (double averageScore, int totalRatings) GetEventRatingSummary(long eventId);
         (double averageScore, int totalRatings) GetUserRatingSummary(long userId);
+
+        List<Rating> GetRatingsByRaterForEvent(long eventId, long raterUserId);
+
+
     }
 }
