@@ -74,7 +74,15 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
                 AverageScore = averageScore,
                 TotalRatings = totalRatings
             });
-        }   
+        }
+
+        [HttpGet("events/{eventId:long}/my-ratings")]
+        public IActionResult GetMyRatingsForEvent(long eventId) 
+        {
+            long userId = GetUserId(); 
+            var ratings = _ratingService.GetRatingsByRaterForEvent(eventId, userId);
+            return Ok(ratings.Select(r => ToDto(r)).ToList());
+        }
 
         // Helper method to extract user ID from claims
         private long GetUserId()

@@ -12,5 +12,6 @@ namespace Analogix_Backend_App.ApplicationCore.Interfaces.Repositories
         Rating? GetByRaterAndTarget(long eventId, long raterUserId, RatingTargetType targetType, long? targetUserId = null);
         List<Rating> GetRatingsForEvent(long eventId);
         List<Rating> GetRatingsForUser(long userId);
+        List<Rating> GetByRaterForEvent(long eventId, long raterUserId);
     }
 }

@@ -31,7 +31,10 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
 
         public PlayerProfile? GetPlayerProfileByUserId(long userId)
         {
-            return _dbContext.PlayerProfiles.SingleOrDefault(p => p.UserId == userId);
+            return _dbContext.PlayerProfiles
+                .Include(p => p.User)
+                .Include(p => p.FavoriteGameTags)
+                .SingleOrDefault(p => p.UserId == userId);
         }
 
         public PlayerProfile UpdatePlayerProfile(PlayerProfile data, IReadOnlyCollection<string>? favoriteGameTags)

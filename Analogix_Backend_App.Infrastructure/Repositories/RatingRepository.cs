@@ -1,6 +1,7 @@
 ﻿using Analogix_Backend_App.ApplicationCore.Interfaces.Repositories;
 using Analogix_Backend_App.Domain.Enums;
 using Analogix_Backend_App.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -49,6 +50,13 @@ namespace Analogix_Backend_App.Infrastructure.Database.Repositories
         {
             return _dbContext.Ratings
                 .Where(r => r.TargetType == RatingTargetType.Player && r.TargetUserId == userId)
+                .ToList();
+        }
+
+        public List<Rating> GetByRaterForEvent(long eventId, long raterUserId)
+        {
+            return _dbContext.Ratings
+                .Where(r => r.EventId == eventId && r.RaterUserId == raterUserId)
                 .ToList();
         }
     }

@@ -77,7 +77,8 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
                 FavoriteGames = profile.FavoriteGames,
                 MasteryLevel = profile.MasteryLevel,
                 UserId = profile.UserId,
-                FavoriteGameTags = profile.FavoriteGameTags.Select(t => t.Name).ToList()
+                FavoriteGameTags = profile.FavoriteGameTags.Select(t => t.Name).ToList(),
+                UserName = profile.User?.Username
             };
         }
 
@@ -107,5 +108,7 @@ namespace Analogix_Backend_App.Presentation.WebAPI.Controllers
             return userId; // If the claim is successfully retrieved and parsed as a long, this line returns the user ID as a long value.
 
         }
+
+        
     }
 }
